@@ -1,5 +1,7 @@
 #ifndef MEMORY_H
 #define MEMORY_H
+#define PTR_ERROR   -1
+#define SUCCESS      0
 
 #include <stdint.h>
 int8_t my_memmove(uint8_t* src, uint8_t* dst, uint32_t length);

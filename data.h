@@ -2,7 +2,7 @@
 #define DATA_H
 
 #include <stdio.h>
-
+#include <stdint.h>
 int8_t* my_itoa(int8_t* str, int32_t data, int32_t base);
 int32_t my_atoi(int8_t* str);
 int8_t big_to_little32(uint32_t* data, uint32_t length);

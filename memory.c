@@ -1,8 +1,5 @@
 #include "memory.h"
 
-#define PTR_ERROR   -1
-#define SUCCESS      0
-
 int8_t my_memmove(uint8_t* src, uint8_t* dst, uint32_t length)
 {
 	
