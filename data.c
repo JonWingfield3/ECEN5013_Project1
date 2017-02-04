@@ -3,38 +3,49 @@
 #define IS_NUM(X) (0x30 <= X && X <= 0x39)
 #define NUM_2_ASCII(X) (X + 0x30)
 #define ASCII_2_NUM(X) (X - 0x30)
+
 int8_t* my_itoa(int8_t* str, int32_t data, int32_t base)
 {
-	int8_t* digits = "0123456789abcdefghijklmnopqrstuvwxyz";
-	uint32_t index = 0;
-	uint32_t order = base;
+	const int8_t* digits = "0123456789abcdefghijklmnopqrstuvwxyz";
+	uint8_t i = 0;
+	uint32_t u_data;	
 
-	if(!str || base <= 1 || base > 36) return NULL;
+	if(!str || base > 36 || base < 2) return NULL;
+	
 	if(data < 0 && base == 10)
 	{
-		str[index++] = '-';
-	//	data = -data;
-	}
-	if(data < base) str[index++] = digits[data];
-	else
-	{
-		while(data/(base*order) != 0)
-			order *= base;
-
-		while(data >= base)
-		{
-			str[index++] = digits[data/order];
-			data %= order;
-			order /= base;
-			while(data < order)
-			{	
-				str[index++] = digits[data/order];
-				order /= base;
-			}
+		*(str + i++) = '-';
+		u_data = ((uint32_t)-data);
+		if(data == 0)
+		{// overflow. not very elegant solution but faster than do-while loop	
+			*(str + i++) = '2'; 
+			*(str + i++) = '1';
+			*(str + i++) = '4';
+			*(str + i++) = '7';
+			*(str + i++) = '4';
+			*(str + i++) = '8';
+			*(str + i++) = '3';
+			*(str + i++) = '6';
+			*(str + i++) = '4';
+			*(str + i++) = '8';
+			*(str + i++) = '\0';
+			return str;	
 		}
-		if(data) str[index++] = digits[data];	
 	}
-	str[index] = '\0';
+	else u_data = (uint32_t)data; 	
+	
+	do	
+	{
+		*(str + i++) = digits[u_data % base];
+		u_data /= base;		
+	}while(u_data);
+	
+	if(str[0] == '-')
+		my_reverse(str + 1, i - 1);
+	else 
+		my_reverse(str, i);
+	
+	*(str + i) = '\0';
 	return str;	
 }
 
