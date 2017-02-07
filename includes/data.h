@@ -13,11 +13,20 @@
 
 /****************************************************************
 *	File: data.h
+*	
 *	Dependencies: stdio.h, stdint.h, data.c, memory.h, memory.c
-*	Description:
-*
+*	
+*	Description: This file contains several functions useful for 
+*	manipulating data, including functions to convert integers to 
+*	ascii strings and vice versa, functions to convert little endian
+*	to big endian and vice versa, and a function to print the contents
+*	of a section of memory. The functions are documented in more detail
+*	below. This code is meant to be portable for multiple architectures,
+*	and because of that the print_memory function can be disabled due
+*	to its use of the printf() function.
 *
 ****************************************************************/
+
 
 
 /****************************************************************

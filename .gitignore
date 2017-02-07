@@ -1,3 +1,4 @@
-*.[od]
+*.[iod]
 *.map
-
+*.asm
+project1

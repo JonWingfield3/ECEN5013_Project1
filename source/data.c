@@ -1,4 +1,4 @@
-#include "data.h"
+#include <data.h>
 
 #define IS_NUM(X) (0x30 <= X && X <= 0x39)
 #define NUM_2_ASCII(X) (X + 0x30)
@@ -71,6 +71,7 @@ int8_t big_to_little32(uint32_t* data, uint32_t length)
 	uint32_t i;
 	if(!data) return PTR_ERROR;
 	
+	length >>= 2;	
 	for(i = 0; i < length; ++i)
 		my_reverse((uint8_t*)(data + i), 4);
 
@@ -81,7 +82,8 @@ int8_t little_to_big32(uint32_t* data, uint32_t length)
 {
 	uint32_t i;
 	if(!data) return PTR_ERROR;
-	
+		
+	length >>= 2;
 	for(i = 0; i < length; ++i)
 		my_reverse((uint8_t*)(data + i),  4);
 

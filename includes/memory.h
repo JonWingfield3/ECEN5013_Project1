@@ -1,6 +1,7 @@
 #ifndef __MEMORY_H__
 #define __MEMORY_H__
 
+// standard includes
 #include <stdint.h>
 
 #define PTR_ERROR  ((int8_t)-1)
@@ -8,13 +9,14 @@
 
 /***********************************************************************************
 * 	File: memory.h
-* 	Dependencies: stdint.h, memory.c
-*	Description: Contains prototypes for 4 different functions used to manipulate memory.
-*	Implementations of the functions is in memory.c. Detailed descriptions
+* 	
+*	Dependencies: stdint.h, memory.c
+*	
+*	Description: Contains prototypes for 4 different functions used to manipulate
+*	memory. Implementations of the functions is in memory.c. Detailed descriptions
 *	of each function given below.
 *
 ***********************************************************************************/
-
 
 
 /***********************************************************************************

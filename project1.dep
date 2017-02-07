@@ -1,3 +1,0 @@
-main.o: main.c memory.h data.h
-memory.o: memory.c memory.h
-data.o: data.c data.h memory.h

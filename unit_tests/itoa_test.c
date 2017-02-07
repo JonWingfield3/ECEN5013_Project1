@@ -8,7 +8,7 @@ int main(void)
 {
 	int32_t i;
 	int8_t s[15];
-
+/*
 	i = 54321;
 	printf("data is: %x \nstring is: %s\n",i, my_itoa(s,i,16));
 	
@@ -37,6 +37,12 @@ int main(void)
 
 	i = -45;
 	printf("data is: %o \nstring is: %s\n",i, my_itoa(s,i,8));
+*/
+	uint8_t temp_ptr[2];
+
+	i = 1;
+	my_itoa(temp_ptr, i, 10);
+	print_memory(temp_ptr,1);
 
 	return 0;
 }
