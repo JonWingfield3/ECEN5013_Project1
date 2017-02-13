@@ -1,4 +1,4 @@
-#include "project_1.h"
+#include "../includes/project_1.h"
 
 void project_1_report(void)
 {
@@ -16,7 +16,7 @@ void project_1_report(void)
 //		*(set1_arr3 + i) = i + 0x61; //converts to ascii
 	}
 
-	
+
 	test_data1(set1_arr1, sizeof(set1_arr1));
 	test_data2(set1_arr2, sizeof(set1_arr2));
 	test_memory(set1_arr2, sizeof(set1_arr2));
@@ -36,7 +36,7 @@ void test_data2(uint8_t* arr, uint8_t len)
 	uint8_t i;
 	uint8_t temp_ptr[3];
 	int32_t temp_num = 0;
-	print_memory(arr, len);	
+	print_memory(arr, len);
 	for(i = 0; i < len; ++i)
 	{
 		printf("\n");
@@ -50,13 +50,11 @@ void test_data2(uint8_t* arr, uint8_t len)
 
 void test_memory(uint8_t* arr, uint8_t len)
 {
-	print_memory(arr, len);	
+	print_memory(arr, len);
 	my_reverse(arr, 12);
 	my_memset(arr+ 16, 4, 0xEE);
 	my_memmove(arr+25,arr+19,6);
 	my_memzero(arr+11, 4);
-	my_memmove(arr, arr+8, 8);	
+	my_memmove(arr, arr+8, 8);
 	print_memory(arr, len);
 }
-
-

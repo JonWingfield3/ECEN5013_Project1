@@ -15,64 +15,79 @@ else # native compilation for bbb
 	CC = gcc
 endif
 
+include sources.mk
+
 OS = $(shell uname)
 STD = c99
 INCLUDES = -I../includes -I../objects -I.
 SRCS = project_1.c main.c memory.c data.c
 OBJ_NAMES = $(SRCS:.c=.o)
-OBJS = ../objects/$(OBJ_NAMES) 
+OBJS = ../objects/$(OBJ_NAMES)
 LIBS = project1.a
-build: project1 project1.dep	
 
-project1: $(OBJ_NAMES) $(LIBS)
-	$(CC) $(CFLAGS) $(INCLUDES) $(LDFLAGS) $(OBJS) -o ../objects/project1
-	size -A $(OBJS)	
+# Set directory names
+MISC := ../misc
+OBJDIR := ../obj
+LOGS := ../logs
+
+# Make any object file
+%.o : %.c | $(OBJDIR) $(LOGS)
+	$(CC) -c $(@:.o=.c) -o $(OBJDIR)/$@
+	@date +%T" Compiled $?" | tee -a $(LOGS)/makeLog
+
+.PHONY : compile-all
+compile-all : $(OBJ_NAMES)
+
+build: project1 project1.dep
+
+.PHONY : project1
+project1: $(OBJ_NAMES) $(LIBS) | $(OBJDIR)
+	$(CC) $(CFLAGS) $(INCLUDES) $(LDFLAGS) $(OBJS) -o $(OBJDIR)/project1
+	size -A $(OBJS)
 
 libproject1.a: $(OBJ_NAMES)
 	ar -rcs ../libs/libproject1.a $(OBJS)
 
-project1.dep: $(SRCS)
-	$(CC) -MM $(SRCS) > ../misc/project1.dep
+project1.dep: $(SRCS) | $(MISC)
+	$(CC) -MM $(SRCS) > $(MISC)/project1.dep
 
-compile-all: $(OBJ_NAMES)
+main.i: main.c | $(MISC)
+	$(CC) -E $(INCLUDES) main.c -o $(MISC)/main.i
 
-main.o: main.c
-	$(CC) -c $(INCLUDES) main.c -o ../objects/main.o
+main.asm: main.c | $(MISC)
+	$(CC) -S $(INCLUDES) main.c -o $(MISC)/main.asm
 
-main.i: main.c
-	$(CC) -E $(INCLUDES) main.c -o ../misc/main.i
+data.i: data.c | $(MISC)
+	$(CC) -E $(INCLUDES) data.c -o $(MISC)/data.i
 
-main.asm: main.c
-	$(CC) -S $(INCLUDES) main.c -o ../misc/main.asm
+data.asm: data.c | $(MISC)
+	$(CC) -S $(INCLUDES) data.c -o $(MISC)/data.asm
 
-data.o: data.c
-	$(CC) -c $(INCLUDES) data.c -o ../objects/data.o
+memory.i: memory.c | $(MISC)
+	$(CC) -E $(INCLUDES) memory.c -o $(MISC)/memory.i
 
-data.i: data.c
-	$(CC) -E $(INCLUDES) data.c -o ../misc/data.i 
+memory.asm: memory.c | $(MISC)
+	$(CC) -S $(INCLUDES) memory.c -o $(MISC)/memory.asm
 
-data.asm: data.c
-	$(CC) -S $(INCLUDES) data.c -o ../misc/data.asm
+project_1.i: project_1.c | $(MISC)
+	$(CC) -E $(INCLUDES) project_1.c -o $(MISC)/project_1.i
 
-memory.o: memory.c
-	$(CC) -c $(INCLUDES) memory.c -o ../objects/memory.o
+project_1.asm: project_1.c | $(MISC)
+	$(CC) -S $(INCLUDES) project_1.c -o $(MISC)/project_1.asm
 
-memory.i: memory.c
-	$(CC) -E $(INCLUDES) memory.c -o ../misc/memory.i
+.PHONY : clean
+clean :
+	-rm -f $(OBJDIR)/project1 $(OBJDIR)/*.o $(MISC)/*.dep $(MISC)/*.map $(MISC)/*.i $(OBJDIR)/*.out $(MISC)/*.asm
 
-memory.asm: memory.c
-	$(CC) -S $(INCLUDES) memory.c -o ../misc/memory.asm
+.PHONY : print
+print: data.c main.c memory.c project_1.c | $(LOGS)
+	@date +%T" $?" | tee -a $(LOGS)/print
 
-project_1.o: project_1.c
-	$(CC) -c $(INCLUDES) project_1.c -o ../objects/project_1.o
+$(MISC):
+	mkdir $(MISC)
 
-project_1.i: project_1.c
-	$(CC) -E $(INCLUDES) project_1.c -o ../misc/project_1.i
+$(OBJDIR):
+	mkdir $(OBJDIR)
 
-project_1.asm: project_1.c
-	$(CC) -S $(INCLUDES) project_1.c -o ../misc/project_1.asm
-
-clean:
-	rm -f ../objects/project1 ../objects/*.o ../misc/*.dep ../misc*.map ../misc/*.i ../objects/*.out ../misc/*.asm
-
-
+$(LOGS):
+	mkdir $(LOGS)
