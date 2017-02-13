@@ -1,0 +1,6 @@
+project_1.o: project_1.c ../includes/project_1.h ../includes/memory.h \
+ ../includes/data.h
+main.o: main.c ../includes/project_1.h ../includes/memory.h \
+ ../includes/data.h ../includes/memory.h ../includes/data.h
+memory.o: memory.c ../includes/memory.h
+data.o: data.c ../includes/data.h ../includes/memory.h
