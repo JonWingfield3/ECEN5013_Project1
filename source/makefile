@@ -1,5 +1,5 @@
 ifeq ($(shell uname),Darwin) # on macbook
-	LDFLAGS = -Wl,-map,project1.map
+	LDFLAGS = -Wl,-map,../misc/project1.map
 ifeq ($(PLATFORM),bbb) # cross compiling for bbb
 	CC = arm-linux-gnueabi-gcc
 	CFLAGS = -g Wall -Werror -O0 -std=$(STD)
@@ -11,7 +11,7 @@ else # native compilation for x86_64, default option
 	CC = gcc
 endif
 else # native compilation for bbb
-	LDFLAGS = -Wl,-Map=project1.map
+	LDFLAGS = -Wl,-Map=../misc/project1.map
 	CC = gcc
 endif
 
