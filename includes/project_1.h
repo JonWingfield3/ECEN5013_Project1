@@ -10,10 +10,11 @@
 /********************************************************************
 *	File: project_1.h
 *
-*	Dependencies:
-*
-*	Description:
-*
+*	Dependencies: memory.h, data.h, stdint.h, stdio.h
+*	Description: project1_report() called from main.c. All other functions
+* called by project1_report(). The functions take arrays as arguments
+* that are used when testing each of the functions in data.c and 
+* memory.c. 
 *
 ********************************************************************/
 
