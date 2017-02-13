@@ -28,6 +28,10 @@ OBJDIR := ../obj
 LOGS := ../logs
 LIBS := ../libs
 
+# Build whole project
+.PHONY : build
+build: project1 project1.dep
+
 # Make any object file
 %.o : %.c | $(OBJDIR) $(LOGS)
 	$(CC) -c $(@:.o=.c) -o $(OBJDIR)/$@
@@ -47,26 +51,31 @@ compile-all : $(OBJ_NAMES)
 	$(CC) -S $(@:.asm=.c) -o $(MISC)/$@
 	@date +%T" Created .asm file for $?" | tee -a $(LOGS)/makeLog.txt
 
-.PHONY : build
-build: project1 project1.dep
-
+# Actual project creation
 .PHONY : project1
 project1: $(OBJ_NAMES) $(LIBS) | $(OBJDIR)
 	$(CC) $(CFLAGS) $(LDFLAGS) $(addprefix $(OBJDIR)/,$(OBJ_NAMES)) -o $(OBJDIR)/$@
+	@date +%T" Created project1.map" | tee -a $(LOGS)/makeLog.txt
 	size -A $(OBJDIR)/$@
 	@date +%T" Built project" | tee -a $(LOGS)/makeLog.txt
 
 libproject1.a: $(OBJ_NAMES) | $(LIBS)
 	ar -rcs $(LIBS)/libproject1.a $(OBJDIR)/$(OBJ_NAMES)
+	@date +%T" Created libproject1.a" | tee -a $(LOGS)/makeLog.txt
 
+# Create project dependendy graph
 project1.dep: $(SRCS) | $(MISC)
 	$(CC) -MM $(SRCS) > $(MISC)/$@
+	@date +%T" Created project1.dep" | tee -a $(LOGS)/makeLog.txt
 
+# Clean project directory
 .PHONY : clean
 clean :
 	-rm -f $(OBJDIR)/* $(MISC)/* ./project1.map
 	@date +%T" Cleaned project space" | tee -a $(LOGS)/makeLog.txt
+	@date +%D" --------------------------" >> $(LOGS)/makeLog.txt
 
+# Print recently changed files
 .PHONY : print
 print: data.c main.c memory.c project_1.c | $(LOGS)
 	@date +%T" $?" | tee -a $(LOGS)/print
